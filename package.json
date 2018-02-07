@@ -1,0 +1,26 @@
+{
+  "name": "@hamistudios/crather",
+  "version": "1.0.0",
+  "description": "a simple express render engine",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hammy2899/crather.git"
+  },
+  "keywords": [
+    "render",
+    "engine",
+    "express",
+    "template",
+    "templates"
+  ],
+  "author": "HamiStudios",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hammy2899/crather/issues"
+  },
+  "homepage": "https://github.com/hammy2899/crather#readme",
+  "dependencies": {
+    "dot-prop": "^4.2.0"
+  }
+}
