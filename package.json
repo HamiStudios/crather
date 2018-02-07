@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hammy2899/crather.git"
+    "url": "git+https://github.com/HamiStudios/crather.git"
   },
   "keywords": [
     "render",
@@ -17,9 +17,9 @@
   "author": "HamiStudios",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hammy2899/crather/issues"
+    "url": "https://github.com/HamiStudios/crather/issues"
   },
-  "homepage": "https://github.com/hammy2899/crather#readme",
+  "homepage": "https://github.com/HamiStudios/crather#readme",
   "dependencies": {
     "dot-prop": "^4.2.0"
   }
