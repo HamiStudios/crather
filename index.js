@@ -2,51 +2,58 @@ const fs = require("fs");
 const dotProp = require("dot-prop");
 
 function replaceTemplates(content, views, callback) {
-	let replacementMatches = content.match(/{{>(.*?)}}/g);
-	let replacements = [];
-	for (let i = 0; i < replacementMatches.length; i++) {
-		if(replacements.indexOf(replacementMatches[i]) === -1) {
-			replacements.push(replacementMatches[i]);
-		}
-	}
-
-	for (let i = 0; i < replacements.length; i++) {
-		let file = replacements[i].replace("{{>", "").replace("}}", "").trim();
-		file = file.split(".").join("/");
-
-		let templateContent = fs.readFileSync(views + "/" + file + ".crather").toString();
-
-		while(content.search(replacements[i]) !== -1) {
-			content = content.replace(replacements[i], templateContent);
-		}
-	}
-
 	if(content.search(/{{>(.*?)}}/g) !== -1) {
-		replaceTemplates(content, views, callback);
+		let replacementMatches = content.match(/{{>(.*?)}}/g);
+		let replacements = [];
+		for (let i = 0; i < replacementMatches.length; i++) {
+			if(replacements.indexOf(replacementMatches[i]) === -1) {
+				replacements.push(replacementMatches[i]);
+			}
+		}
+
+		for (let i = 0; i < replacements.length; i++) {
+			let file = replacements[i].replace("{{>", "").replace("}}", "").trim();
+			file = file.split(".").join("/");
+
+			let templateContent = fs.readFileSync(views + "/" + file + ".crather").toString();
+
+			while(content.search(replacements[i]) !== -1) {
+				content = content.replace(replacements[i], templateContent);
+			}
+		}
+
+		if(content.search(/{{>(.*?)}}/g) !== -1) {
+			replaceTemplates(content, views, callback);
+		} else {
+			callback(content);
+		}
 	} else {
 		callback(content);
 	}
 }
 
 function replaceValues(content, data, callback) {
-	let replacementMatches = content.match(/{{(.*?)}}/g);
-	let replacements = [];
-	for (let i = 0; i < replacementMatches.length; i++) {
-		if(replacements.indexOf(replacementMatches[i]) === -1) {
-			replacements.push(replacementMatches[i]);
+	if(content.search(/{{(.*?)}}/g) !== -1) {
+		let replacementMatches = content.match(/{{(.*?)}}/g);
+		let replacements = [];
+		for (let i = 0; i < replacementMatches.length; i++) {
+			if (replacements.indexOf(replacementMatches[i]) === -1) {
+				replacements.push(replacementMatches[i]);
+			}
 		}
-	}
 
-	for (let i = 0; i < replacements.length; i++) {
-		let value = replacements[i].replace("{{", "").replace("}}", "").trim();
+		for (let i = 0; i < replacements.length; i++) {
+			let value = replacements[i].replace("{{", "").replace("}}", "").trim();
 
-		while(content.search(replacements[i]) !== -1) {
-			content = content.replace(replacements[i], (dotProp.get(data, value) || ""));
+			while (content.search(replacements[i]) !== -1) {
+				content = content.replace(replacements[i], (dotProp.get(data, value) || ""));
 
+			}
 		}
 	}
 
 	callback(content);
+
 }
 
 function crather(filePath, options, callback) {
