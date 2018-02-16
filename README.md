@@ -19,6 +19,7 @@ let app = express();
 app.engine("crather", crather);
 
 app.set("views", "./views");
+app.set("scripts", "./scripts");
 app.set("view engine", "crather");
 ```
 
@@ -28,7 +29,7 @@ index.js
 app.get("/", function(req, res) {
 	res.render("home", {
 		title: "Home Page",
-		message: "Thank you for downloading crather!"
+		message: "Thank you for downloading crather"
 	});
 });
 ```
@@ -38,11 +39,22 @@ views/home.crather
 <title>{{ title }}</title>
 
 {{>messages.welcome}}
+
+{{;change_message}}
 ```
 
 views/messages/welcome.crather
 ```html
 <p>{{ message }}</p>
+```
+
+scripts/change_message.js
+```javascript
+module.exports = function(data, callback) {
+	data.message += "!";
+	
+	callback("<p>Added '!' to the end of the message.</p>");
+};
 ```
 
 <br/>
@@ -52,4 +64,6 @@ Output:
 <title>Home Page</title>
 
 <p>Thank you for downloading crather!</p>
+
+<p>Added '!' to the end of the message.</p>
 ```
