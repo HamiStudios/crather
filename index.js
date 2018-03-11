@@ -98,7 +98,7 @@ function replaceValues(content, data, callback) {
 			let value = replacements[i].replace("{{", "").replace("}}", "").trim();
 
 			while (content.search(replacements[i]) !== -1) {
-				content = content.replace(replacements[i], (dotProp.get(data, value) || ""));
+				content = content.replace(replacements[i], dotProp.get(data, value) || "");
 			}
 		}
 	}
@@ -120,15 +120,15 @@ function crather(filePath, options, callback) {
 					replaceScripts(rendered, options.settings["scripts"] || "./scripts", options, function (replaced) {
 						rendered = replaced;
 
-						replaceValues(rendered, options, function (replaced) {
-							rendered = replaced;
+						if(rendered.search(/{{([>;])(.*?)}}/g) !== -1) {
+							replace(replace_callback);
+						} else {
+							replaceValues(rendered, options, function (replaced) {
+								rendered = replaced;
 
-							if(rendered.search(/{{(.*?)}}/g) !== -1) {
-								replace(replace_callback);
-							} else {
 								return replace_callback(rendered);
-							}
-						});
+							});
+						}
 					});
 				});
 			};
