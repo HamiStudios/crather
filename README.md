@@ -79,7 +79,7 @@ Output:
 ---
 
 ## Using as a function
-You can use crather as a function process crather files
+You can use crather as a function to process crather files
 
 index.js
 ```javascript
