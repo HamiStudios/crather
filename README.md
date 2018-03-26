@@ -1,15 +1,23 @@
 # crather
-crather is a simple express render engine
+crather is a simple render engine
 
-### Requirements
-- Express
+### Features:
 
-### Installation
+- Can be used to render [`express`](https://github.com/expressjs/express) views
+- Supports templates and scripts to create content which has access to the view data
+- Can be used as a standalone processor to create rendered contnet, great for HTML emails
+- Coming in at 5KB it's pretty lightweight
+
+---
+
+## Installation
 ```
 $ npm install --save crather
 ```
 
-### Setup
+---
+
+## Setup
 ```javascript
 const express = require("express");
 const crather = require("crather");
@@ -23,14 +31,16 @@ app.set("scripts", "./scripts");
 app.set("view engine", "crather");
 ```
 
-### Usage
+---
+
+## Usage
 index.js
 ```javascript
 app.get("/", function(req, res) {
-	res.render("home", {
-		title: "Home Page",
-		message: "Thank you for downloading crather"
-	});
+    res.render("home", {
+        title: "Home Page",
+        message: "Thank you for downloading crather"
+    });
 });
 ```
 
@@ -51,13 +61,11 @@ views/messages/welcome.crather
 scripts/change_message.js
 ```javascript
 module.exports = function(data, callback) {
-	data.message += "!";
+    data.message += "!";
 	
-	callback("<p>Added '!' to the end of the message.</p>");
+    callback("<p>Added '!' to the end of the message.</p>");
 };
 ```
-
-<br/>
 
 Output:
 ```html
@@ -66,4 +74,63 @@ Output:
 <p>Thank you for downloading crather!</p>
 
 <p>Added '!' to the end of the message.</p>
+```
+
+---
+
+## Using as a function
+You can use crather as a function process crather files
+
+index.js
+```javascript
+const crather = require("crather");
+
+const file = "home.crather";
+const options = {
+    title: "Home Page",
+    message: "Crather is awesome!"
+};
+const defaultOptions = {
+    settings: {
+        views: __dirname + "/views/",
+        scripts: __dirname + "/scripts/"
+    }
+};
+
+crather(file, options, defaultOptions, function(err, rendered) {
+    if(err) {
+        console.error(err);
+    } else {
+        console.log("Processed HTML:\n\n", rendered);
+    }
+});
+```
+
+views/home.crather
+```html
+<title>{{title}}</title>
+
+<p>{{message}}</p>
+```
+
+Output:
+
+```bash
+$ node index.js
+$ Processed HTML:
+
+<title>Home Page</title>
+
+<p>Crather is awesome!</p>
+```
+
+You can also set default values by using `global`
+
+```javascript
+global.crather.defaults = {
+    settings: {
+        views: __dirname + "/views/",
+        scripts: __dirname + "/scripts/"
+    }
+};
 ```
