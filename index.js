@@ -122,7 +122,7 @@ function crather(filePath, options, defaultOptionsOrCallback, callback) {
 			if(typeof defaultOptionsOrCallback === "object") {
 				options = deepAssign(defaultOptionsOrCallback, options);
 			} else if(global.crather !== undefined && global.crather.defaults !== undefined && typeof global.crather.defaults === "object") {
-				let defaults = Object.assign({}, global.crather.defaults);
+				let defaults = JSON.parse(JSON.stringify(global.crather.defaults));
 
 				options = deepAssign(defaults, options);
 			}
