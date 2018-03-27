@@ -112,7 +112,7 @@ function crather(filePath, options, defaultOptionsOrCallback, callback) {
 	if(typeof defaultOptionsOrCallback === "function" && callback === undefined) {
 		callback = defaultOptionsOrCallback;
 	}
-	
+
 	fs.readFile(filePath, function (err, content) {
 		if(err) {
 			return callback(err);
@@ -122,7 +122,9 @@ function crather(filePath, options, defaultOptionsOrCallback, callback) {
 			if(typeof defaultOptionsOrCallback === "object") {
 				options = deepAssign(defaultOptionsOrCallback, options);
 			} else if(global.crather !== undefined && global.crather.defaults !== undefined && typeof global.crather.defaults === "object") {
-				options = deepAssign(global.crather.defaults, options);
+				let defaults = global.crather.defaults;
+
+				options = deepAssign(defaults, options);
 			}
 			
 			let replace = function (replace_callback) {

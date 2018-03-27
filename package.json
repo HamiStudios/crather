@@ -1,6 +1,6 @@
 {
   "name": "crather",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "a simple express render engine",
   "main": "index.js",
   "repository": {
