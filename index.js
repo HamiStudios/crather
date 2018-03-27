@@ -120,9 +120,9 @@ function crather(filePath, options, defaultOptionsOrCallback, callback) {
 			let rendered = content.toString();
 			
 			if(typeof defaultOptionsOrCallback === "object") {
-				options = deepAssign(options, defaultOptionsOrCallback);
+				options = deepAssign(defaultOptionsOrCallback, options);
 			} else if(global.crather !== undefined && global.crather.defaults !== undefined && typeof global.crather.defaults === "object") {
-				options = deepAssign(options, global.crather.defaults);
+				options = deepAssign(global.crather.defaults, options);
 			}
 			
 			let replace = function (replace_callback) {
