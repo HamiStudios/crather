@@ -1,4 +1,4 @@
-![crather logo](https://www.hamistudios.com/assets/img/crather_icon.png)
+![crather logo](https://www.hamistudios.com/assets/img/crather_icon_transparent.png)
 
 # crather
 crather is a simple render engine
