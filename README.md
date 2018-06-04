@@ -3,9 +3,7 @@
 # crather
 crather is a simple render engine
 
-
-![npm downloads](https://img.shields.io/npm/dt/crather.svg?style=flat-square)
-![npm version](https://img.shields.io/npm/v/crather.svg?style=flat-square)
+![npm version](https://img.shields.io/npm/v/@hamistudios/crather.svg?style=flat-square)
 ![license](https://img.shields.io/github/license/hamistudios/crather.svg?style=flat-square)
 
 
@@ -20,7 +18,7 @@ crather is a simple render engine
 
 ## Installation
 ```
-$ npm install --save crather
+$ npm install --save @hamistudios/crather
 ```
 
 ---
