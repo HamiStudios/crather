@@ -1,18 +1,24 @@
-![crather logo](https://www.hamistudios.com/assets/img/crather_icon_transparent.png)
 
-# crather
-crather is a simple render engine
+<p align="center">
+  <img src="https://www.hamistudios.com/assets/img/crather_icon_transparent.png">
+</p>
 
-![npm version](https://img.shields.io/npm/v/@hamistudios/crather.svg?style=flat-square)
-![license](https://img.shields.io/github/license/hamistudios/crather.svg?style=flat-square)
+<h1 align="center">crather</h1>
+<p align="center">a simple <a href="https://nodejs.org">nodejs</a> render engine</p>
 
+<p align="center">
+  <a href="https://travis-ci.org/HamiStudios/crather"><img src="https://travis-ci.org/HamiStudios/crather.svg?branch=master"></a>
+  <a href="https://coveralls.io/github/HamiStudios/crather?branch=master"><img src="https://coveralls.io/repos/github/HamiStudios/crather/badge.svg?branch=master"></a>
+  <a href="https://www.npmjs.com/package/@hamistudios/crather"><img src="https://img.shields.io/npm/v/@hamistudios/crather.svg"></a>
+  <a href="https://github.com/hamistudios/crather/blob/master/LICENSE.md"><img src="https://img.shields.io/github/license/hamistudios/crather.svg"></a>
+</p>
 
 ### Features:
 
-- Can be used to render [`express`](https://github.com/expressjs/express) views
-- Supports templates and scripts to create content which has access to the view data
-- Can be used as a standalone processor to create rendered contnet, great for HTML emails
-- Coming in at 5KB it's pretty lightweight
+- Can be used to seamlessly with [`express`](https://github.com/expressjs/express) to render views
+- Supports templates and scripts to create dynamic content
+- Can be used as a standalone render engine which is great for HTML emails
+- Can be used to process any file type HTML, CSS, Text you name it
 
 ---
 
@@ -21,122 +27,54 @@ crather is a simple render engine
 $ npm install --save @hamistudios/crather
 ```
 
----
+## Quick start
 
-## Setup
-```javascript
-const express = require("express");
-const crather = require("crather");
+```crather
+<!-- example.crather -->
 
-let app = express();
-
-app.engine("crather", crather);
-
-app.set("views", "./views");
-app.set("scripts", "./scripts");
-app.set("view engine", "crather");
+<h1>{{ message }}</h1>
 ```
 
----
-
-## Usage
-index.js
 ```javascript
-app.get("/", function(req, res) {
-    res.render("home", {
-        title: "Home Page",
-        message: "Thank you for downloading crather"
-    });
+// index.js
+
+const Crather = require('@hamistudios/crather');  
+  
+let crather = new Crather({  
+  data: {
+    message: 'Hello World'
+  }
 });
-```
 
-views/home.crather
-```html
-<title>{{ title }}</title>
-
-{{>messages.welcome}}
-
-{{;change_message}}
-```
-
-views/messages/welcome.crather
-```html
-<p>{{ message }}</p>
-```
-
-scripts/change_message.js
-```javascript
-module.exports = function(data, callback) {
-    data.message += "!";
-	
-    callback("<p>Added '!' to the end of the message.</p>");
-};
+crather.parse('./example.crather', function(err, result) {  
+   if(err) console.error(err);  
+   else console.log(result.getRendered());  
+});
 ```
 
 Output:
 ```html
-<title>Home Page</title>
-
-<p>Thank you for downloading crather!</p>
-
-<p>Added '!' to the end of the message.</p>
+<h1>Hello World</h1>
 ```
 
----
+For more help and information head over to our [website](https://crather.hamistudios.com).
 
-## Using as a function
-You can use crather as a function to process crather files
+## Documentation
+You can view all documentation on the [crather website](https://crather.hamistudios.org).
 
-index.js
-```javascript
-const crather = require("crather");
-
-const file = "home.crather";
-const options = {
-    title: "Home Page",
-    message: "Crather is awesome!"
-};
-const defaultOptions = {
-    settings: {
-        views: __dirname + "/views/",
-        scripts: __dirname + "/scripts/"
-    }
-};
-
-crather(file, options, defaultOptions, function(err, rendered) {
-    if(err) {
-        console.error(err);
-    } else {
-        console.log("Processed HTML:\n\n", rendered);
-    }
-});
-```
-
-views/home.crather
-```html
-<title>{{title}}</title>
-
-<p>{{message}}</p>
-```
-
-Output:
-
-```bash
-$ node index.js
-$ Processed HTML:
-
-<title>Home Page</title>
-
-<p>Crather is awesome!</p>
-```
-
-You can also set default values by using `global`
-
-```javascript
-global.crather.defaults = {
-    settings: {
-        views: __dirname + "/views/",
-        scripts: __dirname + "/scripts/"
-    }
-};
-```
+* Getting started  
+  * [Quick start](https://crather.hamistudios.org/getting-started/quick-start.md)  
+  * [Using express](https://crather.hamistudios.org/getting-started/express.md)  
+  
+* Guides  
+  * [Standard Expressions](https://crather.hamistudios.org/guides/standard-expressions.md)  
+  * [Templates](https://crather.hamistudios.org/guides/templates.md)  
+  * [Scripts](https://crather.hamistudios.org/guides/scripts.md)  
+  
+* Reference  
+  * [Crather](https://crather.hamistudios.org/reference/Crather.md)  
+  * [Result](https://crather.hamistudios.org/reference/Result.md)  
+  * [Crather.script](https://crather.hamistudios.org/reference/Crather.script.md)  
+  * [Expression](reference/Expression.md)  
+    
+* [Changelog](https://crather.hamistudios.org/CHANGELOG.md)
