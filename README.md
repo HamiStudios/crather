@@ -63,18 +63,18 @@ For more help and information head over to our [website](https://crather.hamistu
 You can view all documentation on the [crather website](https://crather.hamistudios.org).
 
 * Getting started  
-  * [Quick start](https://crather.hamistudios.org/getting-started/quick-start.md)  
-  * [Using express](https://crather.hamistudios.org/getting-started/express.md)  
+  * [Quick start](https://crather.hamistudios.org/#/getting-started/quick-start.md)  
+  * [Using express](https://crather.hamistudios.org/#/getting-started/express.md)  
   
 * Guides  
-  * [Standard Expressions](https://crather.hamistudios.org/guides/standard-expressions.md)  
-  * [Templates](https://crather.hamistudios.org/guides/templates.md)  
-  * [Scripts](https://crather.hamistudios.org/guides/scripts.md)  
+  * [Standard Expressions](https://crather.hamistudios.org/#/guides/standard-expressions.md)  
+  * [Templates](https://crather.hamistudios.org/#/guides/templates.md)  
+  * [Scripts](https://crather.hamistudios.org/#/guides/scripts.md)  
   
 * Reference  
-  * [Crather](https://crather.hamistudios.org/reference/Crather.md)  
-  * [Result](https://crather.hamistudios.org/reference/Result.md)  
-  * [Crather.script](https://crather.hamistudios.org/reference/Crather.script.md)  
-  * [Expression](reference/Expression.md)  
+  * [Crather](https://crather.hamistudios.org/#/reference/Crather.md)  
+  * [Result](https://crather.hamistudios.org/#/reference/Result.md)  
+  * [Crather.script](https://crather.hamistudios.org/#/reference/Crather.script.md)  
+  * [Expression](https://crather.hamistudios.org/#/reference/Expression.md)
     
-* [Changelog](https://crather.hamistudios.org/CHANGELOG.md)
+* [Changelog](https://crather.hamistudios.org/#/CHANGELOG.md)
