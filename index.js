@@ -1,157 +1,50 @@
-const fs = require("fs");
-const path = require("path");
-const dotProp = require("dot-prop");
-const deepAssign = require("deep-assign");
+const
+  Crather         = require('./src/Crather'),
+  ScriptFunction  = require('./src/definitions/ScriptFunction')
+;
 
+/**
+ * Express render function initializer
+ */
+function express() {
 
-function replaceTemplates(content, views, callback) {
-	if(content.search(/{{>(.*?)}}/g) !== -1) {
-		let replacementMatches = content.match(/{{>(.*?)}}/g);
-		let replacements = [];
-		for (let i = 0; i < replacementMatches.length; i++) {
-			if(replacements.indexOf(replacementMatches[i]) === -1) {
-				replacements.push(replacementMatches[i]);
-			}
-		}
-		
-		for (let i = 0; i < replacements.length; i++) {
-			let file = replacements[i].replace("{{>", "").replace("}}", "").trim();
-			file = file.split(".").join("/");
-			file = path.resolve(views + "/" + file + ".crather");
-			
-			let templateContent = fs.readFileSync(file).toString();
-			
-			while(content.search(replacements[i]) !== -1) {
-				content = content.replace(replacements[i], templateContent);
-			}
-		}
-		
-		if(content.search(/{{>(.*?)}}/g) !== -1) {
-			replaceTemplates(content, views, callback);
-		} else {
-			callback(content);
-		}
-	} else {
-		callback(content);
-	}
+  let
+    crather = new Crather()
+  ;
+  
+  /**
+   * Express render function for crather
+   *
+   * @param {string} filePath The path to the file you want to render
+   * @param {Object} options An object of data and options
+   * @param {function(err: Error, result: string)} callback The callback for when the file is rendered
+   */
+  return function (filePath, options, callback) {
+    
+    crather.setOptions({
+      data             : options,
+      templates        : options.settings.templates || './templates',
+      scripts          : options.settings.scripts || './scripts'
+    });
+  
+    crather.parse(
+      filePath,
+      function (err, result) {
+      
+        callback(err, err ? '' : result.getRendered());
+      
+      }
+    );
+    
+  }.bind(this);
+
 }
 
-function replaceScripts(content, scripts, data, callback) {
-	if(content.search(/{{;(.*?)}}/g) !== -1) {
-		let replacementMatches = content.match(/{{;(.*?)}}/g);
-		let replacements = [];
-		for (let i = 0; i < replacementMatches.length; i++) {
-			if(replacements.indexOf(replacementMatches[i]) === -1) {
-				replacements.push(replacementMatches[i]);
-			}
-		}
-		
-		let left = replacements.length;
-		let finish = function () {
-			left--;
-			if(left <= 0) {
-				if(content.search(/{{;(.*?)}}/g) !== -1) {
-					replaceScripts(content, scripts, callback);
-				} else {
-					callback(content);
-				}
-			}
-		};
-		
-		for (let i = 0; i < replacements.length; i++) {
-			let file = replacements[i].replace("{{;", "").replace("}}", "").trim();
-			file = file.split(".").join("/");
-			file = path.resolve(scripts + "/" + file + ".js");
-			
-			let script = require(file);
-			if(typeof script === "function") {
-				script(data, function (returned) {
-					if(returned !== null && returned !== undefined) {
-						while(content.search(replacements[i]) !== -1) {
-							content = content.replace(replacements[i], returned);
-						}
-					}
-					
-					finish();
-				});
-			} else {
-				finish();
-				throw new Error("Script files must return functions");
-			}
-		}
-		
-		
-	} else {
-		callback(content);
-	}
-}
+// add the express function onto Crather
+Crather.express = express;
 
-function replaceValues(content, data, callback) {
-	if(content.search(/{{(.*?)}}/g) !== -1) {
-		let replacementMatches = content.match(/{{(.*?)}}/g);
-		let replacements = [];
-		for (let i = 0; i < replacementMatches.length; i++) {
-			if (replacements.indexOf(replacementMatches[i]) === -1) {
-				replacements.push(replacementMatches[i]);
-			}
-		}
-		
-		for (let i = 0; i < replacements.length; i++) {
-			let value = replacements[i].replace("{{", "").replace("}}", "").trim();
-			
-			while (content.search(replacements[i]) !== -1) {
-				content = content.replace(replacements[i], dotProp.get(data, value) || "");
-			}
-		}
-	}
-	
-	callback(content);
-}
+// add ScriptFunction onto Crather
+Crather.script = ScriptFunction;
 
-function crather(filePath, options, defaultOptionsOrCallback, callback) {
-	if(typeof defaultOptionsOrCallback === "function" && callback === undefined) {
-		callback = defaultOptionsOrCallback;
-	}
 
-	fs.readFile(filePath, function (err, content) {
-		if(err) {
-			return callback(err);
-		} else {
-			let rendered = content.toString();
-			
-			if(typeof defaultOptionsOrCallback === "object") {
-				options = deepAssign(defaultOptionsOrCallback, options);
-			} else if(global.crather !== undefined && global.crather.defaults !== undefined && typeof global.crather.defaults === "object") {
-				let defaults = JSON.parse(JSON.stringify(global.crather.defaults));
-
-				options = deepAssign(defaults, options);
-			}
-			
-			let replace = function (replace_callback) {
-				replaceTemplates(rendered, options.settings["views"] || "./views", function (replaced) {
-					rendered = replaced;
-					
-					replaceScripts(rendered, options.settings["scripts"] || "./scripts", options, function (replaced) {
-						rendered = replaced;
-						
-						if(rendered.search(/{{([>;])(.*?)}}/g) !== -1) {
-							replace(replace_callback);
-						} else {
-							replaceValues(rendered, options, function (replaced) {
-								rendered = replaced;
-								
-								return replace_callback(rendered);
-							});
-						}
-					});
-				});
-			};
-			
-			replace(function (rendered) {
-				return callback(null, rendered);
-			});
-		}
-	});
-}
-
-module.exports = crather;
+module.exports = Crather;
