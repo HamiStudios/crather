@@ -1,8 +1,12 @@
 {
   "name": "@hamistudios/crather",
-  "version": "1.2.6",
-  "description": "a simple express render engine",
+  "version": "2.0.0",
+  "description": "a simple nodejs render engine",
   "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jest --coverage --verbose",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HamiStudios/crather.git"
@@ -11,7 +15,6 @@
     "render",
     "engine",
     "express",
-    "template",
     "templates"
   ],
   "author": "HamiStudios",
@@ -21,7 +24,11 @@
   },
   "homepage": "https://github.com/HamiStudios/crather#readme",
   "dependencies": {
-    "deep-assign": "^2.0.0",
+    "circle-assign": "^1.0.3",
     "dot-prop": "^4.2.0"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.1",
+    "jest": "^23.1.0"
   }
 }
