@@ -100,7 +100,7 @@ Crather.globals = {};
  */
 Crather.prototype.setOptions = function (options) {
   
-  this._originalOptions = circleAssign(defaultOptions, this._originalOptions, options);
+  this._originalOptions = circleAssign(defaultOptions, options);
   this.options = circleAssign({}, this._originalOptions);
   
 };
