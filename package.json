@@ -1,6 +1,6 @@
 {
   "name": "@hamistudios/crather",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "a simple nodejs render engine",
   "main": "index.js",
   "scripts": {
