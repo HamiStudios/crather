@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://www.hamistudios.com/assets/img/crather_icon_transparent.png">
+  <img src="logo.png">
 </p>
 
 <h1 align="center">crather</h1>
